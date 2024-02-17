@@ -1,3 +1,5 @@
+We are going to build a SaaS Platform using Nextjs, Tailwind CSS, Shadcn UI, TypeScript
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

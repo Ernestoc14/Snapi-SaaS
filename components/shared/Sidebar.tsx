@@ -1,8 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SignedIn } from "@clerk/nextjs";
+import { navLinks } from "@/constants";
+import { usePathname } from "next/navigation";
+import { link } from "fs";
 
 const Sidebar = () => {
+  const pathname = usePathname();
   return (
     <aside className="sidebar">
       <div className="flex flex-col size-full gap-4">
@@ -18,7 +22,18 @@ const Sidebar = () => {
         <nav className="sidebar-nav">
           <SignedIn>
             <ul className="sidebar-nav_elements">
-              {/* 40 min */}
+              {navLinks.map((link) => {
+                const isActive = link.route === pathname;
+
+                return (
+                  <li
+                    key={link.route}
+                    className={`sidebar-nav_element group ${isActive ? "bg-purple-gradient text-white" : "text-gray-700"}`}
+                  >
+                    {link.label}
+                  </li>
+                );
+              })}
             </ul>
           </SignedIn>
         </nav>

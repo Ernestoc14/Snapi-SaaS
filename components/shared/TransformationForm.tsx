@@ -31,6 +31,7 @@ import { CustomField } from "./CustomField";
 import { useState, useTransition } from "react";
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import { updateCredits } from "@/lib/actions/user.actions";
+import MediaUploader from "./MediaUploader";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -49,7 +50,7 @@ const TransformationForm = ({
   config = null,
 }: TransformationFormProps) => {
   const transformationType = transformationTypes[type];
-  const [Image, setImage] = useState(data);
+  const [image, setImage] = useState(data);
   const [newTransformation, setNewTransformation] =
     useState<Transformations | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,11 +69,14 @@ const TransformationForm = ({
         }
       : defaultValues;
 
+
+  // Define the form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialValues,
   });
 
+  // Define a submit handler
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
@@ -212,6 +216,23 @@ const TransformationForm = ({
             )}
           </div>
         )}
+
+        <div className="media-uploader-field">
+          <CustomField 
+            control={form.control}
+            name="publicId"
+            className="flex flex-col size-full"
+            render={({ field }) => (
+              <MediaUploader
+                onValueChange={field.onChange}
+                setImage={setImage}
+                image={image}
+                type={type}
+                publicId={field.value}
+              />
+            )}
+          />
+        </div>
         <div className="flex flex-col gap-4">
           <Button
             type="button"

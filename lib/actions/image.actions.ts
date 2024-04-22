@@ -62,6 +62,8 @@ export async function deleteImage(imageId: string) {
 }
 
 // GET IMAGE FROM DATABASE
+
+// 3 hr 08 min
 export async function getImageById(imageId: string) {
   try {
     await connectToDatabase()

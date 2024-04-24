@@ -7,6 +7,8 @@ import User from "../database/models/user.model"
 import Image from "../database/models/image.model"
 import { redirect } from "next/navigation"
 
+const populateUser = (query: any) => query.populate({ path: "author", model: User, select: "_id firstName lastName" })
+
 // file containing server actions for image manipulation
 
 // ADD IMAGE TO DATABASE
@@ -62,12 +64,14 @@ export async function deleteImage(imageId: string) {
 }
 
 // GET IMAGE FROM DATABASE
-
-// 3 hr 08 min
 export async function getImageById(imageId: string) {
   try {
     await connectToDatabase()
-    revalidatePath(path)
+
+    const image = await populateUser(Image.findById(imageId))
+
+    if(!image) throw new Error("Image not found")
+    
     return JSON.parse(JSON.stringify(image))
   } catch (error) {
     handleError(error)

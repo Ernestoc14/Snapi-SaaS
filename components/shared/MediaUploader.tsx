@@ -59,6 +59,7 @@ const MediaUploader = ({
         resourceType: "image",
       }}
       onSuccess={onUploadSuccessHandler}
+      onError={onUploadErrorHandler}
     >
       {({ open }) => (
         <div className="flex flex-col gap-4">

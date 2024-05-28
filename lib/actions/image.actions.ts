@@ -94,7 +94,7 @@ export async function getAllImages({ page = 1, limit = 9, searchQuery = "" }: { 
     })
 
     let expression = "folder=snapi"
-    if (searchQuery) expression += ` AND tags=${searchQuery}`
+    if (searchQuery) expression += ` AND ${searchQuery}`
 
     const { resources } = await cloudinary.search.expression(expression).execute();
 

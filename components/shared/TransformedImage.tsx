@@ -1,3 +1,5 @@
+"use client"
+
 import { dataUrl, debounce, getImageSize } from "@/lib/utils";
 import { CldImage } from "next-cloudinary";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
@@ -13,6 +15,7 @@ const TransformedImage = ({
   hasDownload = false,
 }: TransformedImageProps) => {
   const downloadHandler = () => {};
+  
   return (
     <div className="flex flex-col gap-4">
       <div className="flex-between">

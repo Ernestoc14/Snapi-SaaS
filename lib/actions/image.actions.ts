@@ -81,9 +81,7 @@ export async function getImageById(imageId: string) {
 }
 
 // GET IMAGES
-
-// Need to fix this server action because is throwing an error on frontend part
-export async function getAllImages({ page = 1, limit = 9, searchQuery = "" }: { limit?: number; page?: number; searchQuery?: string; }) {
+export async function getAllImages({ page = 1, limit = 9, searchQuery = "" }: { limit?: number; page: number; searchQuery?: string; }) {
   try {
     await connectToDatabase()
     cloudinary.config({
@@ -94,7 +92,9 @@ export async function getAllImages({ page = 1, limit = 9, searchQuery = "" }: { 
     })
 
     let expression = "folder=snapi"
-    if (searchQuery) expression += ` AND ${searchQuery}`
+    if (searchQuery) {
+      expression += ` AND ${searchQuery}`
+    }
 
     const { resources } = await cloudinary.search.expression(expression).execute();
 

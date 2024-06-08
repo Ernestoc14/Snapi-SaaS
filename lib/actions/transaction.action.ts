@@ -2,6 +2,9 @@
 import { redirect } from "next/navigation"
 import Stripe from "stripe"
 import { connectToDatabase } from "../database/mongoose"
+import { updateCredits } from "./user.actions"
+import Transaction from "../database/models/transaction.model"
+import { handleError } from "../utils"
 
 export async function checkoutCredits(transaction: CheckoutTransactionParams) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
@@ -42,7 +45,11 @@ export async function createTransaction(transaction: CreateTransactionParams) {
     const newTransaction = await Transaction.create({
       ...transaction, buyer: transaction.buyerId
     })
-  } catch (error) {
 
+    await updateCredits(transaction.buyerId, transaction.credits)
+
+    return JSON.parse(JSON.stringify(newTransaction))
+  } catch (error) {
+    handleError(error)
   }
 }

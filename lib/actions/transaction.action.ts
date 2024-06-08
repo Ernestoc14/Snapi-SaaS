@@ -1,6 +1,7 @@
 "use server"
 import { redirect } from "next/navigation"
 import Stripe from "stripe"
+import { connectToDatabase } from "../database/mongoose"
 
 export async function checkoutCredits(transaction: CheckoutTransactionParams) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
@@ -25,10 +26,23 @@ export async function checkoutCredits(transaction: CheckoutTransactionParams) {
       credits: transaction.credits,
       buyerId: transaction.buyerId
     },
-    mode: "payment", 
+    mode: "payment",
     success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
     cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
   })
 
   redirect(session.url!)
+}
+
+export async function createTransaction(transaction: CreateTransactionParams) {
+  try {
+    await connectToDatabase()
+
+    //Create a new transaction with a buyerID
+    const newTransaction = await Transaction.create({
+      ...transaction, buyer: transaction.buyerId
+    })
+  } catch (error) {
+
+  }
 }
